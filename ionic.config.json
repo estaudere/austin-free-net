@@ -1,5 +1,7 @@
 {
   "name": "Austin Free Net",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }

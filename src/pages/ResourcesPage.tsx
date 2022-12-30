@@ -1,10 +1,10 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCard, IonThumbnail, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
+import './ResourcesPage.css';
 import { initializeApp } from "firebase/app";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
-import './Tab1.css';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,7 +23,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const Tab1: React.FC = () => {
+const Tab3: React.FC = () => {
   const [data, setData] = useState<any>([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -37,20 +37,29 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Resources</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">News</IonTitle>
+            <IonTitle size="large">Resources</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {data.map((doc:any) => <div>{doc.title}</div>)}
-        <ExploreContainer name="Tab 1 page" />
+        {data.map((doc:any) => 
+          <IonCard>
+            <img className="thumbnail" alt="" src={doc.thumbnail}></img>
+            <IonCardHeader>
+              <IonCardTitle>{doc.title}</IonCardTitle>
+              <IonCardSubtitle>{doc.date_posted.toDate().toDateString()}</IonCardSubtitle>
+            </IonCardHeader>
+
+            <IonButton href={doc.link} fill="clear">More</IonButton>
+          </IonCard>
+        )}
       </IonContent>
     </IonPage>
   );
 };
 
-export default Tab1;
+export default Tab3;

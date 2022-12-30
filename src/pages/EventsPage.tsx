@@ -1,10 +1,10 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useState, useEffect } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
+import './EventsPage.css';
 import { initializeApp } from "firebase/app";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
-import './Tab1.css';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,11 +23,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const Tab1: React.FC = () => {
+
+const Tab2: React.FC = () => {
   const [data, setData] = useState<any>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getDocs(collection(db, "resources"));
+      const result = await getDocs(collection(db, "events"));
       setData(result.docs.map(doc => doc.data()));
       console.log(result);
     };
@@ -37,20 +38,31 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Events</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">News</IonTitle>
+            <IonTitle size="large">Events</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {data.map((doc:any) => <div>{doc.title}</div>)}
-        <ExploreContainer name="Tab 1 page" />
+        {data.map((doc:any) => 
+          <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>{doc.title}</IonCardTitle>
+              <IonCardSubtitle>{doc.date.toDate().toDateString()}</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              {doc.description}
+            </IonCardContent>
+
+            <IonButton href={doc.link} fill="clear">RSVP</IonButton>
+          </IonCard>
+        )}
       </IonContent>
     </IonPage>
   );
 };
 
-export default Tab1;
+export default Tab2;
